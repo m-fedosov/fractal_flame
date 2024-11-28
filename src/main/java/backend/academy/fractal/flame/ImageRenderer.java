@@ -10,7 +10,9 @@ public class ImageRenderer {
      */
     public static void render(int iterations, ArrayList<Variation> variations, ImageMatrix image) {
         // коэфиценты соонтношения для генерации без тёмных областей по бокам
-        double xMax = (double) image.width() / image.height();
+        int imgWidth  = image.width();
+        int imgHeight = image.height();
+        double xMax = (double) imgWidth / imgHeight;
         double xMin = -xMax;
         double yMin = -1;
         double yMax = 1;
@@ -27,30 +29,32 @@ public class ImageRenderer {
             newX = variation.a() * newX + variation.b() * newY + variation.c();
             newY = variation.d() * newX + variation.e() * newY + variation.f();
             //Применяем нелинейное преобразование;
-            if (step >= 0) {
-                //Вычисляем координаты точки, а затем задаем цвет
-                int x1 = image.width()  - (int) (((xMax - newX) / (xMax - xMin)) * image.width());
-                int y1 = image.height() - (int) (((yMax - newY) / (yMax - yMin)) * image.height());
-                Pixel p = image.pixel(x1, y1);
-                //Если точка попала в область изображения
-                if (p != null) {
-                    //то проверяем, первый ли раз попали в нее
-                    int pCnt = p.cnt();
-                    if (pCnt == 0) {
-                        //Попали в первый раз, берем стартовый цвет у соответствующего аффинного преобразования
-                        p.r(p.r());
-                        p.g(p.g());
-                        p.b(p.b());
-                    } else {
-                        //Попали не в первый раз, считаем так:
-                        p.r((p.r() + variation.pixel().r()) / 2);
-                        p.g((p.g() + variation.pixel().g()) / 2);
-                        p.b((p.b() + variation.pixel().b()) / 2);
-                    }
-                    //Увеличиваем счетчик точки на единицу
-                    p.cnt(pCnt + 1);
-                }
+            if (step < 0) {
+                continue;
             }
+            //Вычисляем координаты точки, а затем задаем цвет
+            int x1 = imgWidth  - (int) (((xMax - newX) / (xMax - xMin)) * imgWidth);
+            int y1 = imgHeight - (int) (((yMax - newY) / (yMax - yMin)) * imgHeight);
+            Pixel p = image.pixel(x1, y1);
+            //Если точка попала в область изображения
+            if (p == null) {
+                continue;
+            }
+            //то проверяем, первый ли раз попали в нее
+            int pCnt = p.cnt();
+            if (pCnt == 0) {
+                //Попали в первый раз, берем стартовый цвет у соответствующего аффинного преобразования
+                p.r(p.r());
+                p.g(p.g());
+                p.b(p.b());
+            } else {
+                //Попали не в первый раз, считаем так:
+                p.r((p.r() + variation.pixel().r()) / 2);
+                p.g((p.g() + variation.pixel().g()) / 2);
+                p.b((p.b() + variation.pixel().b()) / 2);
+            }
+            //Увеличиваем счетчик точки на единицу
+            p.cnt(pCnt + 1);
         }
     }
 
