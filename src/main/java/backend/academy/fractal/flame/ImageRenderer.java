@@ -1,5 +1,8 @@
 package backend.academy.fractal.flame;
 
+import backend.academy.fractal.flame.variations.BaseTransformation;
+import backend.academy.fractal.flame.variations.DiscTransformation;
+import backend.academy.fractal.flame.variations.SinusoidalTransformation;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,10 +11,10 @@ public class ImageRenderer {
     /**
      * You can understand this magic by reading that <a href="https://habr.com/ru/articles/251537/">article</a>
      */
-    public static void render(int iterations, ArrayList<Variation> variations, ImageMatrix image) {
+    public static void render(int iterations, ArrayList<Variation> variations, ImageMatrix img) {
         // коэфиценты соонтношения для генерации без тёмных областей по бокам
-        int imgWidth  = image.width();
-        int imgHeight = image.height();
+        int imgWidth  = img.width();
+        int imgHeight = img.height();
         double xMax = (double) imgWidth / imgHeight;
         double xMin = -xMax;
         double yMin = -1;
@@ -20,7 +23,11 @@ public class ImageRenderer {
         Random r = new Random();
         double newX = r.nextDouble(xMin, xMax);
         double newY = r.nextDouble(yMin, yMax);
-        //Первые 20 итераций точку не рисуем, т.к. сначала надо найти начальную
+        // Какую трансформацию применяем
+//        BaseTransformation transformation = new LinearTransformation(img);
+        BaseTransformation transformation = new DiscTransformation(img);
+
+        // Первые 20 итераций точку не рисуем, т.к. сначала надо найти начальную
         int SKIP_STEPS = 20;
         for (int step = -SKIP_STEPS; step < iterations; step++) {
             //Выбираем одно из аффинных преобразований
@@ -33,9 +40,8 @@ public class ImageRenderer {
                 continue;
             }
             //Вычисляем координаты точки, а затем задаем цвет
-            int x1 = imgWidth  - (int) (((xMax - newX) / (xMax - xMin)) * imgWidth);
-            int y1 = imgHeight - (int) (((yMax - newY) / (yMax - yMin)) * imgHeight);
-            Pixel p = image.pixel(x1, y1);
+            PixelXY pixelXY = transformation.getNextXY(newX, newY);
+            Pixel p = img.pixel(pixelXY.x(), pixelXY.y());
             //Если точка попала в область изображения
             if (p == null) {
                 continue;
