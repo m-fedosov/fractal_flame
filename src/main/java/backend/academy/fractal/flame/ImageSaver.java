@@ -10,7 +10,7 @@ import java.nio.file.Path;
 @AllArgsConstructor
 public class ImageSaver {
 
-    public void save(FractalImage image, Path path) {
+    public void save(Image image, Path path) {
         if (!path.toString().toLowerCase().endsWith(".png")) {
             throw new RuntimeException("The valid format is png only, like \"image.png\"");
         }
@@ -21,7 +21,7 @@ public class ImageSaver {
         }
     }
 
-    public static BufferedImage convertImageToBufferedImage(FractalImage img) {
+    public static BufferedImage convertImageToBufferedImage(Image img) {
         BufferedImage renderedImage = new BufferedImage(img.width(), img.height(), BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < img.width(); x++) {
             for (int y = 0; y < img.height(); y++) {

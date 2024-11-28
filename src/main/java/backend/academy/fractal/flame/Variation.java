@@ -4,7 +4,8 @@ import lombok.Getter;
 import java.util.Random;
 
 @Getter
-public class AffineCoeficents {
+public class Variation {
+    private Pixel pixel;
     private Double a;
     private Double b;
     private Double c;
@@ -12,16 +13,13 @@ public class AffineCoeficents {
     private Double e;
     private Double f;
 
-    private AffineCoeficents() {}
+    private Variation() {}
 
     /**
-     * It's a real magic, read about it here:
-     * https://habr.com/ru/articles/251537/
-     *
-     * @return
+     * It's a real magic, read about it <a href="https://habr.com/ru/articles/251537/">here</a>
      */
-    public static AffineCoeficents create() {
-        AffineCoeficents coeficents = new AffineCoeficents();
+    public static Variation create() {
+        Variation coeficents = new Variation();
         Random r = new Random();
         while (true) {
             coeficents.a = r.nextDouble(-1, 1);
@@ -30,13 +28,15 @@ public class AffineCoeficents {
             coeficents.d = r.nextDouble(-1.5, 1.5);
             coeficents.e = r.nextDouble(-1, 1);
             coeficents.f = r.nextDouble(-1.5, 1.5);
-            if (coeficents.isGoodForFractalFlame()) {
+            if (coeficents.isGoodForAffineCoefficient()) {
+                Color color = Color.getRandom();
+                coeficents.pixel = new Pixel(color.r(),color.g(), color.b(), 0);
                 return coeficents;
             }
         }
     }
 
-    private boolean isGoodForFractalFlame() {
+    private boolean isGoodForAffineCoefficient() {
         if (Math.sqrt(a) + Math.sqrt(d) >= 1) {
             return false;
         }
