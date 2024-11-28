@@ -25,6 +25,7 @@ public enum Color {
     public static Color getRandom() {
         Color[] colors = values();
         Random r = new Random();
-        return colors[r.nextInt(colors.length)];
+        // NO BLACK
+        return colors[r.nextInt(1, colors.length)];
     }
 }

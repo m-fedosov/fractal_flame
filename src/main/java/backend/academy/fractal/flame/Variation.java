@@ -30,7 +30,7 @@ public class Variation {
             coeficents.f = r.nextDouble(-1.5, 1.5);
             if (coeficents.isGoodForAffineCoefficient()) {
                 Color color = Color.getRandom();
-                coeficents.pixel = new Pixel(color.r(),color.g(), color.b(), 0);
+                coeficents.pixel = new Pixel(color.r(),color.g(), color.b());
                 return coeficents;
             }
         }

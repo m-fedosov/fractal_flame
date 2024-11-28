@@ -3,12 +3,12 @@ package backend.academy.fractal.flame;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Renderer {
+public class ImageRenderer {
 
     /**
      * You can understand this magic by reading that <a href="https://habr.com/ru/articles/251537/">article</a>
      */
-    public static void render(int iterations, ArrayList<Variation> variations, Image image) {
+    public static void render(int iterations, ArrayList<Variation> variations, ImageMatrix image) {
         // коэфиценты соонтношения для генерации без тёмных областей по бокам
         double xMax = (double) image.width() / image.height();
         double xMin = -xMax;
@@ -35,8 +35,8 @@ public class Renderer {
                 //Если точка попала в область изображения
                 if (p != null) {
                     //то проверяем, первый ли раз попали в нее
-                    int p_cnt = p.counter();
-                    if (p_cnt == 0) {
+                    int pCnt = p.cnt();
+                    if (pCnt == 0) {
                         //Попали в первый раз, берем стартовый цвет у соответствующего аффинного преобразования
                         p.r(p.r());
                         p.g(p.g());
@@ -48,7 +48,7 @@ public class Renderer {
                         p.b((p.b() + variation.pixel().b()) / 2);
                     }
                     //Увеличиваем счетчик точки на единицу
-                    p.counter(p_cnt + 1);
+                    p.cnt(pCnt + 1);
                 }
             }
         }

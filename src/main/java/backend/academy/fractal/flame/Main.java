@@ -9,8 +9,9 @@ public class Main {
         for (int i = 0; i < 6; i++) {
             variations.add(Variation.create());
         }
-        Image image = Image.create(1920, 1080);
-        Renderer.render(100_000_000, variations, image);
+        ImageMatrix image = ImageMatrix.create(1920, 1080);
+        ImageRenderer.render(100_000_000, variations, image);
+        ImageNormalizer.correction(image);
         ImageSaver saver = new ImageSaver();
         saver.save(image, Path.of("image.png"));
     }
