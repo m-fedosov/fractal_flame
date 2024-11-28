@@ -4,12 +4,12 @@ import backend.academy.fractal.flame.ImageMatrix;
 import backend.academy.fractal.flame.PixelXY;
 import java.util.Random;
 
-public class LinearTransformation implements BaseTransformation {
+public abstract class BaseTransformation {
     double xMax, xMin, yMax, yMin;
     int width, height;
     Random r;
 
-    public LinearTransformation(ImageMatrix img) {
+    BaseTransformation(ImageMatrix img) {
         r = new Random();
         width  = img.width();
         height = img.height();
@@ -20,10 +20,13 @@ public class LinearTransformation implements BaseTransformation {
         yMax = 1;
     }
 
-    @Override
     public PixelXY getNextXY(double x, double y) {
-        int x1 = width  - (int) (((xMax - x) / (xMax - xMin)) * width);
-        int y1 = height - (int) (((yMax - y) / (yMax - yMin)) * height);
+        int x1 = width  - (int) (((xMax - countX(x, y)) / (xMax - xMin)) * width);
+        int y1 = height - (int) (((yMax - countY(x, y)) / (yMax - yMin)) * height);
         return new PixelXY(x1, y1);
     }
+
+    abstract double countX(double x, double y);
+
+    abstract double countY(double x, double y);
 }
