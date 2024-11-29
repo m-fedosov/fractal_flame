@@ -1,6 +1,5 @@
 package backend.academy.fractal.flame;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Main {
@@ -9,11 +8,10 @@ public class Main {
         for (int i = 0; i < 6; i++) {
             variations.add(Variation.create());
         }
-        ImageMatrix image = ImageMatrix.create(1920, 1080);
+        ImageMatrix image = ImageMatrix.create(2560, 1600);
         ImageRenderer.render(100_000_000, variations, image);
         ImageNormalizer.correction(image);
-        ImageSaver saver = new ImageSaver();
-        saver.save(image, Path.of("image.png"));
+        ImageSaver.save(image);
     }
 
 }

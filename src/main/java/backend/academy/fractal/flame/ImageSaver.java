@@ -6,22 +6,25 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class ImageSaver {
 
-    public void save(ImageMatrix image, Path path) {
-        if (!path.toString().toLowerCase().endsWith(".png")) {
-            throw new RuntimeException("The valid format is png only, like \"image.png\"");
-        }
+    public static void save(ImageMatrix image) {
         try {
-            ImageIO.write(convertImageToBufferedImage(image), "png", path.toFile());
+            String randomHash = UUID.randomUUID().toString();
+            String fileName = "image" + randomHash + ".png";
+            ImageIO.write(
+                convertImageToBufferedImage(image),
+                "png",
+                Path.of("images/" + fileName).toFile());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static BufferedImage convertImageToBufferedImage(ImageMatrix img) {
+    private static BufferedImage convertImageToBufferedImage(ImageMatrix img) {
         BufferedImage renderedImage = new BufferedImage(img.width(), img.height(), BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < img.width(); x++) {
             for (int y = 0; y < img.height(); y++) {
