@@ -27,20 +27,17 @@ public class ImageRenderer {
         Random r = new Random();
         double newX = r.nextDouble(xMin, xMax);
         double newY = r.nextDouble(yMin, yMax);
-        // Какую трансформацию применяем
-        Random random = new Random();
 
-        // Массив классов трансформаций
+        // Применяем одну из трансформаций
+        Random random = new Random();
         BaseTransformation[] transformations = {
-//            new DiscTransformation(img),
-//            new HeartTransformation(img),
+            new DiscTransformation(img),
+            new HeartTransformation(img),
             new LinearTransformation(img),
             new PolarTransformation(img),
             new SinusoidalTransformation(img),
-//            new SphericalTransformation(img)
+            new SphericalTransformation(img)
         };
-
-        // Выбор случайной трансформации
         BaseTransformation transformation = transformations[random.nextInt(transformations.length)];
 
         // Первые 20 итераций точку не рисуем, т.к. сначала надо найти начальную

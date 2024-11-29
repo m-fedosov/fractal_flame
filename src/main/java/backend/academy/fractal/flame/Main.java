@@ -9,7 +9,7 @@ public class Main {
             variations.add(Variation.create());
         }
         ImageMatrix image = ImageMatrix.create(2560, 1600);
-        ImageRenderer.render(100_000_000, variations, image);
+        ImageRenderer.render(300_000_000, variations, image);
         ImageNormalizer.correction(image);
         ImageSaver.save(image);
     }
