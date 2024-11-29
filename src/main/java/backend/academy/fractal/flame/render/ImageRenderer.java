@@ -1,5 +1,9 @@
-package backend.academy.fractal.flame;
+package backend.academy.fractal.flame.render;
 
+import backend.academy.fractal.flame.ImageMatrix;
+import backend.academy.fractal.flame.Pixel;
+import backend.academy.fractal.flame.PixelXY;
+import backend.academy.fractal.flame.Variation;
 import backend.academy.fractal.flame.transformations.BaseTransformation;
 import backend.academy.fractal.flame.transformations.DiscTransformation;
 import backend.academy.fractal.flame.transformations.HeartTransformation;

@@ -1,16 +1,9 @@
-package backend.academy.fractal.flame;
+package backend.academy.fractal.flame.render;
 
+import backend.academy.fractal.flame.ImageMatrix;
+import backend.academy.fractal.flame.Variation;
 import backend.academy.fractal.flame.transformations.BaseTransformation;
-import com.google.common.util.concurrent.AtomicDouble;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceArray;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class MultyThreadImageRenderer extends ImageRenderer {
     int nThreads = 1;

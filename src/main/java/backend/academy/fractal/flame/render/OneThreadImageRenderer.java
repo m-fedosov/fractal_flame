@@ -1,8 +1,9 @@
-package backend.academy.fractal.flame;
+package backend.academy.fractal.flame.render;
 
+import backend.academy.fractal.flame.ImageMatrix;
+import backend.academy.fractal.flame.Variation;
 import backend.academy.fractal.flame.transformations.BaseTransformation;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class OneThreadImageRenderer extends ImageRenderer {
 
