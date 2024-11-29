@@ -1,4 +1,4 @@
-package backend.academy.fractal.flame.variations;
+package backend.academy.fractal.flame.transformations;
 
 import backend.academy.fractal.flame.ImageMatrix;
 import backend.academy.fractal.flame.PixelXY;

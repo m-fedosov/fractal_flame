@@ -1,12 +1,12 @@
 package backend.academy.fractal.flame;
 
-import backend.academy.fractal.flame.variations.BaseTransformation;
-import backend.academy.fractal.flame.variations.DiscTransformation;
-import backend.academy.fractal.flame.variations.HeartTransformation;
-import backend.academy.fractal.flame.variations.LinearTransformation;
-import backend.academy.fractal.flame.variations.PolarTransformation;
-import backend.academy.fractal.flame.variations.SinusoidalTransformation;
-import backend.academy.fractal.flame.variations.SphericalTransformation;
+import backend.academy.fractal.flame.transformations.BaseTransformation;
+import backend.academy.fractal.flame.transformations.DiscTransformation;
+import backend.academy.fractal.flame.transformations.HeartTransformation;
+import backend.academy.fractal.flame.transformations.LinearTransformation;
+import backend.academy.fractal.flame.transformations.PolarTransformation;
+import backend.academy.fractal.flame.transformations.SinusoidalTransformation;
+import backend.academy.fractal.flame.transformations.SphericalTransformation;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,12 +28,20 @@ public class ImageRenderer {
         double newX = r.nextDouble(xMin, xMax);
         double newY = r.nextDouble(yMin, yMax);
         // Какую трансформацию применяем
-        BaseTransformation transformation = new DiscTransformation(img);
-//        BaseTransformation transformation = new HeartTransformation(img);
-//        BaseTransformation transformation = new LinearTransformation(img);
-//        BaseTransformation transformation = new PolarTransformation(img);
-//        BaseTransformation transformation = new SinusoidalTransformation(img);
-//        BaseTransformation transformation = new SphericalTransformation(img);
+        Random random = new Random();
+
+        // Массив классов трансформаций
+        BaseTransformation[] transformations = {
+//            new DiscTransformation(img),
+//            new HeartTransformation(img),
+            new LinearTransformation(img),
+            new PolarTransformation(img),
+            new SinusoidalTransformation(img),
+//            new SphericalTransformation(img)
+        };
+
+        // Выбор случайной трансформации
+        BaseTransformation transformation = transformations[random.nextInt(transformations.length)];
 
         // Первые 20 итераций точку не рисуем, т.к. сначала надо найти начальную
         int SKIP_STEPS = 20;
