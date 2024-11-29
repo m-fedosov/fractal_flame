@@ -4,7 +4,7 @@ import backend.academy.fractal.flame.ImageMatrix;
 import backend.academy.fractal.flame.PixelXY;
 import java.util.Random;
 
-public abstract class BaseTransformation {
+abstract public class BaseTransformation {
     double xMax, xMin, yMax, yMin;
     int width, height;
     Random r;
