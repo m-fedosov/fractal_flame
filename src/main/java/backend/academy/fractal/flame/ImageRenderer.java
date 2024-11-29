@@ -7,15 +7,19 @@ import backend.academy.fractal.flame.transformations.LinearTransformation;
 import backend.academy.fractal.flame.transformations.PolarTransformation;
 import backend.academy.fractal.flame.transformations.SinusoidalTransformation;
 import backend.academy.fractal.flame.transformations.SphericalTransformation;
+import lombok.AllArgsConstructor;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ImageRenderer {
+@AllArgsConstructor
+abstract public class ImageRenderer {
+    int iterations;
+    ArrayList<Variation> variations;
 
     /**
      * You can understand this magic by reading that <a href="https://habr.com/ru/articles/251537/">article</a>
      */
-    public static void render(int iterations, ArrayList<Variation> variations, ImageMatrix img) {
+    public void render(ImageMatrix img) {
         // коэфиценты соонтношения для генерации без тёмных областей по бокам
         int imgWidth  = img.width();
         int imgHeight = img.height();
@@ -25,8 +29,8 @@ public class ImageRenderer {
         double yMax = 1;
 
         Random r = new Random();
-        double newX = r.nextDouble(xMin, xMax);
-        double newY = r.nextDouble(yMin, yMax);
+        double x = r.nextDouble(xMin, xMax);
+        double y = r.nextDouble(yMin, yMax);
 
         // Применяем одну из трансформаций
         Random random = new Random();
@@ -42,18 +46,28 @@ public class ImageRenderer {
 
         // Первые 20 итераций точку не рисуем, т.к. сначала надо найти начальную
         int SKIP_STEPS = 20;
-        for (int step = -SKIP_STEPS; step < iterations; step++) {
+        for (int step = 0; step < SKIP_STEPS; step++) {
             //Выбираем одно из аффинных преобразований
             Variation variation = variations.get(r.nextInt(0, variations.size()));
             //и применяем его
-            newX = variation.a() * newX + variation.b() * newY + variation.c();
-            newY = variation.d() * newX + variation.e() * newY + variation.f();
-            //Применяем нелинейное преобразование;
-            if (step < 0) {
-                continue;
-            }
+            x = variation.a() * x + variation.b() * y + variation.c();
+            y = variation.d() * x + variation.e() * y + variation.f();
+        }
+
+        draw(img, transformation, x, y);
+    }
+
+    abstract void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY);
+
+    void drawDefault(int nThreads, ImageMatrix img, BaseTransformation transformation, double startX, double startY) {
+        double x = startX, y = startY;
+        Random r = new Random();
+        for (int step = 0; step < iterations / nThreads; step++) {
+            Variation variation = variations.get(r.nextInt(0, variations.size()));
+            x = variation.a() * x + variation.b() * y + variation.c();
+            y = variation.d() * x + variation.e() * y + variation.f();
             //Вычисляем координаты точки, а затем задаем цвет
-            PixelXY pixelXY = transformation.getNextXY(newX, newY);
+            PixelXY pixelXY = transformation.getNextXY(x, y);
             Pixel p = img.pixel(pixelXY.x(), pixelXY.y());
             //Если точка попала в область изображения
             if (p == null) {
@@ -76,5 +90,4 @@ public class ImageRenderer {
             p.cnt(pCnt + 1);
         }
     }
-
 }

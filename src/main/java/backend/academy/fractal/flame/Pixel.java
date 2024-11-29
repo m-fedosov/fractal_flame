@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Pixel {
-    private int r, g, b;     // Pixel color
-    private int cnt = 0; // How many times we paint this pixel
+    volatile private int r, g, b;     // Pixel color
+    volatile private int cnt = 0; // How many times we paint this pixel
     private double normal;   // Like opacity - pixel with more counter is brighter
 
     Pixel (int r, int g, int b) {

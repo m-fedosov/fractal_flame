@@ -8,10 +8,11 @@ public class Main {
         for (int i = 0; i < 6; i++) {
             variations.add(Variation.create());
         }
-        ImageMatrix image = ImageMatrix.create(2560, 1600);
-        ImageRenderer.render(300_000_000, variations, image);
-        ImageNormalizer.correction(image);
-        ImageSaver.save(image);
+        ImageMatrix img = ImageMatrix.create(2560, 1600);
+//        new OneThreadImageRenderer(300_000_000, variations).render(img);
+        new MultyThreadImageRenderer(10, 300_000_000, variations).render(img);
+        ImageNormalizer.correction(img);
+        ImageSaver.save(img);
     }
 
 }
