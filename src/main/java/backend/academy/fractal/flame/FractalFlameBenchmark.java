@@ -15,6 +15,7 @@ public class FractalFlameBenchmark {
         int threadCount = 10;
         int imgWidth = 2560;
         int imgHeight = 1600;
+        int symmetry = 1;
 
         StringBuilder markdownReport = new StringBuilder();
         markdownReport.append("# Image Rendering Benchmark Report\n\n");
@@ -29,7 +30,7 @@ public class FractalFlameBenchmark {
                 variations.add(Variation.create());
             }
             ImageMatrix img = ImageMatrix.create(imgWidth, imgHeight);
-            new OneThreadImageRenderer(drawIterations, variations).render(img);
+            new OneThreadImageRenderer(drawIterations, variations).render(img, symmetry);
             ImageNormalizer.correction(img);
             ImageSaver.save(img);
             System.out.println("Single-threaded image " + i + " generated.");
@@ -50,7 +51,7 @@ public class FractalFlameBenchmark {
                 variations.add(Variation.create());
             }
             ImageMatrix img = ImageMatrix.create(2560, 1600);
-            new MultyThreadImageRenderer(threadCount, drawIterations, variations).render(img);
+            new MultyThreadImageRenderer(threadCount, drawIterations, variations).render(img, symmetry);
             ImageNormalizer.correction(img);
             ImageSaver.save(img);
             System.out.println("Multi-threaded image " + i + " generated.");

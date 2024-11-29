@@ -11,9 +11,9 @@ import backend.academy.fractal.flame.transformations.LinearTransformation;
 import backend.academy.fractal.flame.transformations.PolarTransformation;
 import backend.academy.fractal.flame.transformations.SinusoidalTransformation;
 import backend.academy.fractal.flame.transformations.SphericalTransformation;
-import lombok.AllArgsConstructor;
 import java.util.ArrayList;
 import java.util.Random;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 abstract public class ImageRenderer {
@@ -23,7 +23,7 @@ abstract public class ImageRenderer {
     /**
      * You can understand this magic by reading that <a href="https://habr.com/ru/articles/251537/">article</a>
      */
-    public void render(ImageMatrix img) {
+    public void render(ImageMatrix img, int symmetry) {
         // коэфиценты соонтношения для генерации без тёмных областей по бокам
         int imgWidth  = img.width();
         int imgHeight = img.height();
@@ -58,40 +58,62 @@ abstract public class ImageRenderer {
             y = variation.d() * x + variation.e() * y + variation.f();
         }
 
-        draw(img, transformation, x, y);
+        draw(img, transformation, x, y, symmetry);
     }
 
-    abstract void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY);
+    abstract void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY, int symmetry);
 
-    void drawDefault(int nThreads, ImageMatrix img, BaseTransformation transformation, double startX, double startY) {
+    void drawDefault(int nThreads, ImageMatrix img, BaseTransformation transformation, double startX, double startY, int symmetry) {
         double x = startX, y = startY;
         Random r = new Random();
-        for (int step = 0; step < iterations / nThreads; step++) {
+        double angle = 0.0;
+        for (int step = 0; step < iterations / nThreads / symmetry; step++) {
             Variation variation = variations.get(r.nextInt(0, variations.size()));
             x = variation.a() * x + variation.b() * y + variation.c();
             y = variation.d() * x + variation.e() * y + variation.f();
-            //Вычисляем координаты точки, а затем задаем цвет
-            PixelXY pixelXY = transformation.getNextXY(x, y);
-            Pixel p = img.pixel(pixelXY.x(), pixelXY.y());
-            //Если точка попала в область изображения
-            if (p == null) {
-                continue;
+            ArrayList<PixelXY> symmetryPixels = new ArrayList<>();
+            symmetryPixels.add(transformation.getNextXY(x, y));
+            // Вычисляем координаты точки и симметричных ей точек
+            for (int i = 1; i < symmetry; i++) {
+                angle += Math.PI * 2 / symmetry;
+                symmetryPixels.add(rotatePixelXY(symmetryPixels.getFirst(), angle, img.width(), img.height()));
             }
-            //то проверяем, первый ли раз попали в нее
-            int pCnt = p.cnt();
-            if (pCnt == 0) {
-                //Попали в первый раз, берем стартовый цвет у соответствующего аффинного преобразования
-                p.r(p.r());
-                p.g(p.g());
-                p.b(p.b());
-            } else {
-                //Попали не в первый раз, считаем так:
-                p.r((p.r() + variation.pixel().r()) / 2);
-                p.g((p.g() + variation.pixel().g()) / 2);
-                p.b((p.b() + variation.pixel().b()) / 2);
+            for (PixelXY symmetryPixel : symmetryPixels) {
+                Pixel p = img.pixel(symmetryPixel.x(), symmetryPixel.y());
+                // Рисуем точку только если она попала в область изображения
+                if (p == null) {
+                    continue;
+                }
+                // Задаём цвет точки
+                int pCnt = p.cnt();
+                if (pCnt == 0) {
+                    //Попали в первый раз, берем стартовый цвет у соответствующего аффинного преобразования
+                    p.r(p.r());
+                    p.g(p.g());
+                    p.b(p.b());
+                } else {
+                    //Попали не в первый раз, считаем так:
+                    p.r((p.r() + variation.pixel().r()) / 2);
+                    p.g((p.g() + variation.pixel().g()) / 2);
+                    p.b((p.b() + variation.pixel().b()) / 2);
+                }
+                //Увеличиваем счетчик точки на единицу
+                p.cnt(pCnt + 1);
             }
-            //Увеличиваем счетчик точки на единицу
-            p.cnt(pCnt + 1);
         }
+    }
+
+    PixelXY rotatePixelXY(PixelXY p, double angle, int imgWidth, int imgHeight) {
+        // Центр изображения
+        int centerX = imgWidth / 2;
+        int centerY = imgHeight / 2;
+        // Перевод в систему координат центра
+        double translatedX = p.x() - centerX;
+        double translatedY = p.y() - centerY;
+        // Поворот точки вокруг центра
+        int rotatedX = (int) (translatedX * Math.cos(angle) - translatedY * Math.sin(angle));
+        int rotatedY = (int) (translatedX * Math.sin(angle) + translatedY * Math.cos(angle));
+        // Возврат в исходную систему координат
+        return new PixelXY(rotatedX + centerX, rotatedY + centerY);
     }
 }

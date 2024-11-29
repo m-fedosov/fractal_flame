@@ -14,10 +14,10 @@ public class MultyThreadImageRenderer extends ImageRenderer {
     }
 
     @Override
-    void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY) {
+    void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY, int symmetry) {
         Thread.Builder builder = Thread.ofVirtual();
         Runnable task = () -> {
-            drawDefault(nThreads, img, transformation, startX, startY);
+            drawDefault(nThreads, img, transformation, startX, startY, symmetry);
         };
 
         ArrayList<Thread> threads = new ArrayList<>();

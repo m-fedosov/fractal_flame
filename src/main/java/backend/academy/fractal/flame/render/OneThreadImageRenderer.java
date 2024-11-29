@@ -12,7 +12,7 @@ public class OneThreadImageRenderer extends ImageRenderer {
     }
 
     @Override
-    void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY) {
-        drawDefault(1, img, transformation, startX, startY);
+    void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY, int symmetry) {
+        drawDefault(1, img, transformation, startX, startY, symmetry);
     }
 }
