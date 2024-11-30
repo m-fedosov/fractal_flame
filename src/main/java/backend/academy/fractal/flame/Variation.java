@@ -1,7 +1,7 @@
 package backend.academy.fractal.flame;
 
-import lombok.Getter;
 import java.util.Random;
+import lombok.Getter;
 
 @Getter
 public class Variation {
@@ -18,6 +18,7 @@ public class Variation {
     /**
      * It's a real magic, read about it <a href="https://habr.com/ru/articles/251537/">here</a>
      */
+    @SuppressWarnings("MagicNumber")
     public static Variation create() {
         Variation coeficents = new Variation();
         Random r = new Random();
@@ -30,7 +31,7 @@ public class Variation {
             coeficents.f = r.nextDouble(-1.5, 1.5);
             if (coeficents.isGoodForAffineCoefficient()) {
                 Color color = Color.getRandom();
-                coeficents.pixel = new Pixel(color.r(),color.g(), color.b());
+                coeficents.pixel = new Pixel(color.r(), color.g(), color.b());
                 return coeficents;
             }
         }

@@ -5,9 +5,13 @@ import backend.academy.fractal.flame.render.OneThreadImageRenderer;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class FractalFlameBenchmark {
+    @SuppressWarnings({"UncommentedMain", "MagicNumber", "RegexpSinglelineJava", "MultipleStringLiterals"})
     public static void main(String[] args) {
 
         int renderIterations = 10;
@@ -64,16 +68,19 @@ public class FractalFlameBenchmark {
 
         // Разница во времени
         markdownReport.append("## Time Difference\n");
-        markdownReport.append("- **Total time difference:** ").append(singleThreadTotal - multiThreadTotal).append(" ms\n");
+        markdownReport.append("- **Total time difference:** ")
+            .append(singleThreadTotal - multiThreadTotal).append(" ms\n");
         markdownReport.append("- **Average time difference per image:** ")
-            .append((int)(singleThreadAvg - multiThreadAvg)).append(" ms\n");
+            .append((int) (singleThreadAvg - multiThreadAvg)).append(" ms\n");
 
         // Запись результатов в файл
         saveReport(markdownReport.toString());
     }
 
+    @SuppressWarnings("RegexpSinglelineJava")
     private static void saveReport(String report) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benchmark_report.md"))) {
+        try (BufferedWriter writer
+                 = new BufferedWriter(new FileWriter("benchmark_report.md", Charset.defaultCharset()))) {
             writer.write(report);
             System.out.println("\nBenchmark results saved to 'benchmark_report.md'.");
         } catch (IOException e) {

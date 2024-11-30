@@ -49,7 +49,7 @@ abstract public class ImageRenderer {
         BaseTransformation transformation = transformations[random.nextInt(transformations.length)];
 
         // Первые 20 итераций точку не рисуем, т.к. сначала надо найти начальную
-        int SKIP_STEPS = 20;
+        final int SKIP_STEPS = 20;
         for (int step = 0; step < SKIP_STEPS; step++) {
             //Выбираем одно из аффинных преобразований
             Variation variation = variations.get(r.nextInt(0, variations.size()));
@@ -63,19 +63,20 @@ abstract public class ImageRenderer {
 
     abstract void draw(ImageMatrix img, BaseTransformation transformation, double startX, double startY, int symmetry);
 
-    void drawDefault(int nThreads, ImageMatrix img, BaseTransformation transformation, double startX, double startY, int symmetry) {
-        double x = startX, y = startY;
+    void drawDefault(int nThreads, ImageMatrix img, BaseTransformation trans, double startX, double startY, int sym) {
+        double x = startX;
+        double y = startY;
         Random r = new Random();
         double angle = 0.0;
-        for (int step = 0; step < iterations / nThreads / symmetry; step++) {
+        for (int step = 0; step < iterations / nThreads / sym; step++) {
             Variation variation = variations.get(r.nextInt(0, variations.size()));
             x = variation.a() * x + variation.b() * y + variation.c();
             y = variation.d() * x + variation.e() * y + variation.f();
             ArrayList<PixelXY> symmetryPixels = new ArrayList<>();
-            symmetryPixels.add(transformation.getNextXY(x, y));
+            symmetryPixels.add(trans.getNextXY(x, y));
             // Вычисляем координаты точки и симметричных ей точек
-            for (int i = 1; i < symmetry; i++) {
-                angle += Math.PI * 2 / symmetry;
+            for (int i = 1; i < sym; i++) {
+                angle += Math.PI * 2 / sym;
                 symmetryPixels.add(rotatePixelXY(symmetryPixels.getFirst(), angle, img.width(), img.height()));
             }
             for (PixelXY symmetryPixel : symmetryPixels) {

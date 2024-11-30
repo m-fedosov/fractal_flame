@@ -1,8 +1,8 @@
 package backend.academy.fractal.flame;
 
+import java.util.Random;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import java.util.Random;
 
 @AllArgsConstructor
 @Getter
@@ -20,7 +20,9 @@ public enum Color {
     ORANGE(248, 158, 79),
     SUN_YELLOW(252, 238, 33);
 
-    final int r, g, b;
+    final int r;
+    final int g;
+    final int b;
 
     public static Color getRandom() {
         Color[] colors = values();

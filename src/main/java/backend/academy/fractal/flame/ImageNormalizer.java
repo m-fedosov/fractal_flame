@@ -1,5 +1,8 @@
 package backend.academy.fractal.flame;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class ImageNormalizer {
 
     /**
@@ -7,7 +10,7 @@ public class ImageNormalizer {
      */
     public static void correction(ImageMatrix image) {
         double max = 0.0;
-        double gamma = 1.5;
+        final double GAMMA = 1.5;
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 Pixel p = image.pixel(x, y);
@@ -23,7 +26,7 @@ public class ImageNormalizer {
             for (int y = 0; y < image.height(); y++) {
                 Pixel p = image.pixel(x, y);
                 p.normal(p.normal() / max);
-                double nCoefficient = Math.pow(p.normal(), (1.0 / gamma));
+                double nCoefficient = Math.pow(p.normal(), (1.0 / GAMMA));
                 p.r((int) (p.r() * nCoefficient));
                 p.g((int) (p.g() * nCoefficient));
                 p.g((int) (p.b() * nCoefficient));

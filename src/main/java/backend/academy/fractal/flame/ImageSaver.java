@@ -1,14 +1,16 @@
 package backend.academy.fractal.flame;
 
-import lombok.AllArgsConstructor;
-import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.UUID;
+import javax.imageio.ImageIO;
+import lombok.AllArgsConstructor;
+import lombok.experimental.UtilityClass;
 
 @AllArgsConstructor
+@UtilityClass
 public class ImageSaver {
 
     public static void save(ImageMatrix image) {

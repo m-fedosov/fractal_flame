@@ -2,9 +2,11 @@ package backend.academy.fractal.flame;
 
 import backend.academy.fractal.flame.render.MultyThreadImageRenderer;
 import java.util.ArrayList;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class FractalFlameGetOneImage {
-
+    @SuppressWarnings({"UncommentedMain", "MagicNumber"})
     public static void main(String[] args) {
         int drawIterations = 300_000_000;
         int threadCount = 10;
