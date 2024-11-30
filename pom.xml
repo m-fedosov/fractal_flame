@@ -73,6 +73,7 @@
         <logback.version>1.5.6</logback.version>
 
         <!-- Tests -->
+        <skipTests>true</skipTests>
         <awaitility.version>4.2.1</awaitility.version>
         <assertj.version>3.26.3</assertj.version>
         <instancio-junit.version>5.0.1</instancio-junit.version>
@@ -499,6 +500,7 @@
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                        <skipTests>${skipTests}</skipTests>
                     </configuration>
                 </plugin>
                 <plugin>

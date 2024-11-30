@@ -7,10 +7,9 @@ import java.nio.file.Path;
 import java.util.UUID;
 import javax.imageio.ImageIO;
 import lombok.AllArgsConstructor;
-import lombok.experimental.UtilityClass;
 
+@SuppressWarnings("HideUtilityClassConstructor")
 @AllArgsConstructor
-@UtilityClass
 public class ImageSaver {
 
     public static void save(ImageMatrix image) {
