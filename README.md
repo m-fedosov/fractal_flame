@@ -1,10 +1,12 @@
-# FractalFlame ❤️‍🔥
+# ❤️‍🔥 Fractal Flame
 
 ![img.png](readme_img/img.png)
 
 Fractal flame is an algorithm proposed by Scott Draves that uses iterated function systems (IFS) to build images. 
 
 Due to different seed values for the pseudorandom number generator, many different “pictures” can be obtained. Although fractality is not always visible in them, the results are very interesting.
+
+<a href="https://flam3.com/flame_draves.pdf">More info</a>
 
 ## Features
 
@@ -15,7 +17,25 @@ Due to different seed values for the pseudorandom number generator, many differe
 
 ## Build and run
 
-- to-be-done
+Build program
+```shell
+mvn clean package assembly:single
+```
+
+Generate one image
+```shell
+java -jar target/flame-jar-with-dependencies.jar --generate
+```
+
+Generate many images and get benchmark_report.md
+```shell
+java -jar target/flame-jar-with-dependencies.jar --generate
+```
+
+See other flags
+```shell
+java -jar target/flame-jar-with-dependencies.jar
+```
 
 ## Image Rendering Benchmark Report
 
